@@ -15,6 +15,7 @@
 % \setDocSubtitle{A subtitle}
 
 \author{%
+Michelle Gower and
 Kian-Tat Lim
 }
 
@@ -24,7 +25,7 @@ Kian-Tat Lim
 \date{\vcsDate}
 
 % Optional: name of the document's curator
-% \setDocCurator{The Curator of this Document}
+\setDocCurator{Michelle Gower}
 
 \setDocAbstract{%
 The Data Backbone (DBB) is a key component that provides for data storage, transport, and replication, allowing data products to move between enclaves.
@@ -38,7 +39,7 @@ It provides a registration mechanism for new datasets and database entries and a
 % Fields: VERSION, DATE, DESCRIPTION, OWNER NAME.
 % See LPM-51 for version number policy.
 \setDocChangeRecord{%
-  \addtohist{1}{YYYY-MM-DD}{Unreleased.}{Kian-Tat Lim}
+  \addtohist{1}{2019-07-08}{Initial version extracted from LDM-152.}{Kian-Tat Lim}
 }
 
 \begin{document}
@@ -46,8 +47,121 @@ It provides a registration mechanism for new datasets and database entries and a
 % Create the title page.
 \maketitle
 
-% ADD CONTENT HERE
-% You can also use the \input command to include several content files.
+
+\section{Introduction}\label{introduction}
+
+The Data Backbone (DBB) provides data management (storage, tracking, and
+replication) for LSST data products that reside in non-computational storage
+tiers.  It provides policy-defined operations for intra-site and inter-site
+data distribution, access latency requirements dependent upon the lifecycle of
+the data, data protection and recovery, data retention and eviction given
+cadences and predicted and observed on-demand usage, and efficient bulk recall
+of data which are spatially, temporally, or otherwise related in support of
+processing or export.
+
+This document describes the baseline design of the LSST Data Backbone (DBB),
+including the following components:
+
+\begin{itemize}
+	\item Data Backbone Ingest/Metadata Management
+	\item Data Backbone Lifetime Management
+	\item Data Backbone Transport/Replication/Backup
+	\item Data Backbone Storage
+\end{itemize}
+
+The relationships between the Data Backbone components are illustrated
+in Figure~\ref{fig:dbb}.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\textwidth]{images/DataBackbone.pdf}
+\caption{Data Backbone}
+\label{fig:dbb}
+\end{figure}
+
+Requirements for the Data Backbone are defined in \citeds{LDM-635}.
+
+The Data Backbone serves as an abstraction against storage components whose
+similar requirements may otherwise have been met through duplication of effort
+during construction and operations. From the perspective of data producers and
+consumers, the Data Backbone provides a common, well-defined concept of how all
+participating storage components are expected to function, which greatly
+simplifies understanding of the system as opposed to understanding differing
+personalities of a large number of components.
+
+The Data Backbone links all of the computational enclaves and the Data Access
+Centers, acting as the spine that supports them all.
+
+Rucio \citep{Rucio} is being considered as an overall DBB system for files.
+
+\section{Replication and Transport}\label{dbb-replication-and-transport}
+
+The Data Backbone spans the Base Site, Archive Site, all Data Access Centers
+and all sites participating in annual data release processing.  Data products
+can enter the Data Backbone at any location as permitted by policy and are
+subject to timely distribution, access-latency guarantees and eviction as
+defined by the policy. The Data Backbone provides data protection of data
+products while resident with the backbone.
+
+Movement operations supported by the Data Backbone include:
+\begin{itemize}
+	\item Staging: data is copied in and out of the Data Backbone in coordination with an external management system; primarily used for workflow orchestration.
+	\item Caching: data location and lifetime is managed by policy; caches are populated by use.
+	\item Mirroring: 1:1 replication of data is dictated by policy.
+	\item Export: data is copied out of the Data Backbone to end users;
+\end{itemize}
+
+The Data Backbone does not include public access restrictions, responsibilities
+regarding proprietary data periods or users with data access rights, or
+authorization or authentication of external users or services. This
+functionality is provided by layers on top of the Data Backbone, in the
+LSST Science Platform, Identity Management, and Bulk Distribution components.
+
+Tiers within the Data Backbone include a custodial store with assurance of
+data preservation and an access tier that may have lower latency.
+
+File transport technologies such as Globus Transfer \citep{GlobusTransfer} with
+GridFTP and RESTful interfaces are being considered.
+
+\section{Location and Metadata}\label{dbb-location-and-metadata}
+
+The Data Backbone tracks the locations of all replicas of data ingested into
+it, along with their metadata and provenance.  This information is stored in
+global, replicated database tables.
+
+\section{Files}\label{dbb-files}
+
+The Data Backbone holds all files that are part of the Science Image Archive,
+including raw data and processed data products, as well as additional files
+such as the Engineering and Facilities Database Large File Annex, files
+associated with the Calibration Database, etc.
+
+These files will be kept on a high-performance, scalable file store and
+archived in a reliable long-term file store.  The baseline design uses GPFS
+\citep{GPFS} and HPSS \citep{HPSS}, but drawbacks to these have been
+identified.  Investigations of alternate storage technologies such as object
+stores (including Amazon Glacier \citep{AmazonGlacier}), Campaign Storage
+\citep{CampaignStorage}, and Quobyte \citep{Quobyte} have been performed, but
+future work remains in this area.
+
+\section{Databases}\label{dbb-databases}
+
+The Data Backbone holds all databases that are part of the Science Catalog
+Archive that is visible to data rights holders.  These include the Query Access
+(Level 2) Database (composed of Data Release catalogs and associated metadata
+as served by the Qserv software, described separately in \citeds{LDM-135}), the
+Calibration Database, the reformatted Engineering and Facility Database, and
+the (external-facing) Level 1 Database.
+
+Just like files, these databases need to be managed in terms of replication,
+disaster recovery, and lifetime.  The underlying mechanisms for data storage
+and transport and the interfaces to the data are significantly different,
+however.  Accordingly, all databases are stored in appropriate database
+management systems that provide their own native mechanisms for replication and
+relational database (for which MySQL/MariaDB \citep{MariaDB}, Oracle
+\citep{Oracle}, and Microsoft SQL Server \citep{SQLServer} are being
+evaluated).
+
 
 \appendix
 % Include all the relevant bib files.
