@@ -127,7 +127,7 @@ GridFTP and RESTful interfaces are being considered.
 
 The Data Backbone tracks the locations of all replicas of data ingested into
 it, along with their metadata and provenance.  This information is stored in
-global, replicated database tables.
+global, replicated database tables within the Consolidated Database instances.
 
 \section{Files}\label{dbb-files}
 
@@ -148,19 +148,17 @@ future work remains in this area.
 
 The Data Backbone holds all databases that are part of the Science Catalog
 Archive that is visible to data rights holders.  These include the Query Access
-(Level 2) Database (composed of Data Release catalogs and associated metadata
+Database (composed of Data Release catalogs and associated metadata
 as served by the Qserv software, described separately in \citeds{LDM-135}), the
 Calibration Database, the reformatted Engineering and Facility Database, and
-the (external-facing) Level 1 Database.
+the (external-facing) Prompt Products Database.
 
 Just like files, these databases need to be managed in terms of replication,
 disaster recovery, and lifetime.  The underlying mechanisms for data storage
 and transport and the interfaces to the data are significantly different,
 however.  Accordingly, all databases are stored in appropriate database
 management systems that provide their own native mechanisms for replication and
-relational database (for which MySQL/MariaDB \citep{MariaDB}, Oracle
-\citep{Oracle}, and Microsoft SQL Server \citep{SQLServer} are being
-evaluated).
+backup.  These include the Qserv distributed database and the Consolidated Database implemented in Oracle \citep{Oracle}.
 
 
 \appendix
