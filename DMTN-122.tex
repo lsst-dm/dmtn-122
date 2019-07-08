@@ -1,0 +1,62 @@
+\documentclass[DM,authoryear,toc]{lsstdoc}
+% lsstdoc documentation: https://lsst-texmf.lsst.io/lsstdoc.html
+
+\input{meta}
+
+% Package imports go here.
+
+% Local commands go here.
+
+% To add a short-form title:
+% \title[Short title]{Title}
+\title{Data Backbone Design}
+
+% Optional subtitle
+% \setDocSubtitle{A subtitle}
+
+\author{%
+Kian-Tat Lim
+}
+
+\setDocRef{DMTN-122}
+\setDocUpstreamLocation{\url{https://github.com/lsst-dm/dmtn-122}}
+
+\date{\vcsDate}
+
+% Optional: name of the document's curator
+% \setDocCurator{The Curator of this Document}
+
+\setDocAbstract{%
+The Data Backbone (DBB) is a key component that provides for data storage, transport, and replication, allowing data products to move between enclaves.
+This service provides policy-based replication of files (including images and flat files to be loaded into databases as well as other raw and intermediate files) and databases (including metadata about files as well as other miscellaneous databases but not including the large Data Release catalogs) across multiple physical locations, including the Base, Commissioning Cluster, NCSA, and Data Access Centers.
+It manages caches of files at each endpoint as well as persistence to long-term archival storage (e.g. tape).
+It provides a registration mechanism for new datasets and database entries and a retrieval mechanism compatible with the Data Butler.
+}
+
+% Change history defined here.
+% Order: oldest first.
+% Fields: VERSION, DATE, DESCRIPTION, OWNER NAME.
+% See LPM-51 for version number policy.
+\setDocChangeRecord{%
+  \addtohist{1}{YYYY-MM-DD}{Unreleased.}{Kian-Tat Lim}
+}
+
+\begin{document}
+
+% Create the title page.
+\maketitle
+
+% ADD CONTENT HERE
+% You can also use the \input command to include several content files.
+
+\appendix
+% Include all the relevant bib files.
+% https://lsst-texmf.lsst.io/lsstdoc.html#bibliographies
+\section{References} \label{sec:bib}
+\bibliography{local,lsst,lsst-dm,refs_ads,refs,books}
+
+% Make sure lsst-texmf/bin/generateAcronyms.py is in your path
+\section{Acronyms} \label{sec:acronyms}
+\input{acronyms.tex}
+
+\end{document}
