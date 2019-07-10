@@ -3,5 +3,6 @@
 	path = lsst-texmf
 	branch = refs/heads/master
 [submodule "images"]
+	url = https://github.com/lsst-dm/images
 	path = images
-	url = git@github.com:lsst-dm/images
+	branch = refs/heads/master
