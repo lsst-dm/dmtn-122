@@ -1,4 +1,4 @@
-\documentclass[DM,authoryear,toc]{lsstdoc}
+\documentclass[DM,obolete,authoryear,toc]{lsstdoc}
 % lsstdoc documentation: https://lsst-texmf.lsst.io/lsstdoc.html
 
 \input{meta}
@@ -28,6 +28,7 @@ Kian-Tat Lim
 \setDocCurator{Michelle Gower}
 
 \setDocAbstract{%
+{\color{red} This document is outdated \url{dmtn-198.lsst.io} provides an as built picture. }
 The Data Backbone (DBB) is a key component that provides for data storage, transport, and replication, allowing data products to move between enclaves.
 This service provides policy-based replication of files (including images and flat files to be loaded into databases as well as other raw and intermediate files) and databases (including metadata about files as well as other miscellaneous databases but not including the large Data Release catalogs) across multiple physical locations, including the Base, Commissioning Cluster, NCSA, and Data Access Centers.
 It manages caches of files at each endpoint as well as persistence to long-term archival storage (e.g. tape).
@@ -48,6 +49,7 @@ It provides a registration mechanism for new datasets and database entries and a
 \maketitle
 
 
+{\color{red} This document is outdated \url{dmtn-198.lsst.io} provides an as built picture. }
 \section{Introduction}\label{introduction}
 
 The Data Backbone (DBB) provides data management (storage, tracking, and
